@@ -1,5 +1,6 @@
-import 'package:expense_tracker/pages/help_page.dart';
-import 'package:expense_tracker/pages/stats_page.dart';
+
+import 'package:ext/pages/help_page.dart';
+import 'package:ext/pages/status_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -16,7 +17,7 @@ class ExpenseTrackerApp extends StatelessWidget {
       home: HomePage(),
       theme: ThemeData.dark().copyWith(
         primaryColor: Color(0xff1C1934),
-        accentColor: Colors.pink,
+        hintColor: Colors.pink,
       ),
     );
   }
