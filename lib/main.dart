@@ -1,125 +1,225 @@
+import 'package:expense_tracker/pages/help_page.dart';
+import 'package:expense_tracker/pages/stats_page.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'components/icon_button.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+void main() => runApp(ExpenseTrackerApp());
 
-  // This widget is the root of your application.
+class ExpenseTrackerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+      title: "Expense Tracker",
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
+      theme: ThemeData.dark().copyWith(
+        primaryColor: Color(0xff1C1934),
+        accentColor: Colors.pink,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class HomePage extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _HomePageState extends State<HomePage> {
+  final List<IconData> bottomBarIcons = [Icons.calendar_today, Icons.insert_chart, Icons.person_outline];
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+
+  double amount = 10;
+  int currentTabSelected = 0;
+
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+      backgroundColor: Theme.of(context).primaryColor,
+      body: Stack(
+        children: <Widget>[
+          _buildBody(),
+          Align(child: _buildBottomBar(),
+            alignment: Alignment.bottomCenter,
+          ),
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  Widget _buildBody() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(66,)),
+              gradient: LinearGradient(colors: [Color(0xff682CFC),
+                Color(0xffB730F9),],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 48, bottom: 42, left: 24,),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+
+                        Text("This week", style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w600,
+                        ),),
+
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text("\$4.12", style: TextStyle(
+                              fontSize: 42, fontWeight: FontWeight.bold,
+                            ),),
+
+                            SizedBox(height: 8,),
+
+                            Text("Total Contributions", style: TextStyle(
+                              fontSize: 15,
+                            ),),
+                          ],
+                        ),
+
+                        Text("Will be collected on Monday",
+                          style: TextStyle(
+                          fontSize: 15,
+                        ),),
+                        
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 12),
+                  child: Icon(FontAwesomeIcons.piggyBank,
+                    color: Color(0xffFB71BC),
+                    size: 100,
+                  ),
+                ),),
+              ],
+            ),
+          ),
+        ),
+        Expanded(child: Container(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 20,),
+                child: Text("Recurring contribution",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24,),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    ActionButton(icon: FontAwesomeIcons.minus, onTap: () {
+                      if (amount == 1) {
+                        return;
+                      }
+                      setState(() {
+                        amount--;
+                      });
+                    }),
+                    Text("\$$amount", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),),
+                    ActionButton(icon: FontAwesomeIcons.plus, onTap: () {
+                      setState(() {
+                        amount++;
+                      });
+                    }),
+                  ],
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 36),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text("Next contribution date:",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xff716E8A),
+                      ),
+                    ),
+
+                    Text("15 Oct 2017",
+                      style: TextStyle(
+                        color: Color(0xff6D5ADB),
+                        fontSize: 14,
+                      ),
+                    ),
+
+                  ],
+                ),
+              )
+
+            ],
+          ),
+        )),
+      ],
+    );
+  }
+
+  Widget _buildBottomBar() {
+
+    return Card(
+      color: Color(0xff2D294A),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(36), bottomRight: Radius.circular(36),)),
+      margin: EdgeInsets.all(16),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6,),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: IconButton(icon: Icon(bottomBarIcons[0],
+                color: currentTabSelected == 0 ? Colors.pink : Color(0xff757495),
+              ), onPressed: () {
+                setState(() {
+                  currentTabSelected = 0;
+                });
+              }),
+            ),
+            Expanded(
+              child: IconButton(icon: Icon(bottomBarIcons[1],
+                color: currentTabSelected == 1 ? Colors.pink : Color(0xff757495),
+              ), onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => StatisticsPage()));
+              }),
+            ),
+            Expanded(
+              child: IconButton(icon: Icon(bottomBarIcons[2],
+                color: currentTabSelected == 2 ? Colors.pink : Color(0xff757495),
+              ), onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => HelpPage(),));
+              }),
+            ),
+          ]
+        ),
+      ),
+    );
+  }
+
 }
